@@ -1,0 +1,14 @@
+---
+
+- name: Create and configure ansible-role-template
+  hosts: client
+
+  # TODO local testing only
+  # debugger: on_failed
+
+  roles:
+    - role: ansible-role-template
+      tasks_from: main
+      ansible_role_template_state: present
+
+...

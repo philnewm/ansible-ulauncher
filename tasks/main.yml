@@ -1,0 +1,10 @@
+---
+
+# tasks file for gnome_setup
+
+
+- name: "Desired state is {{ ansible_role_template_state }}"
+  ansible.builtin.include_tasks:
+    file: "{{ ansible_role_template_state }}.yml"
+
+...

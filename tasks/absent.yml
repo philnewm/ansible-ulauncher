@@ -1,0 +1,11 @@
+---
+
+# Tasks to remove ansible-role-template
+
+
+- name: Remove unused dependencies
+  become: true
+  ansible.builtin.package:
+    autoremove: true
+
+...

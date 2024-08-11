@@ -1,0 +1,25 @@
+---
+
+- name: Clean Up
+  hosts: client
+
+  pre_tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+
+  tasks:
+    # TODO check if VM even exists
+  roles:
+    - role: ansible-role-template
+      ansible_role_template_state: absent
+
+- name: Cleanup
+  hosts: localhost
+
+  tasks:
+    - name: Remove boot_analysis
+      ansible.builtin.file:
+        path: boot_analysis
+        state: absent
+
+...

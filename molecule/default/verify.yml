@@ -1,0 +1,15 @@
+---
+
+- name: Verify
+  hosts: client
+
+  tasks:
+    - name: Initialize role library
+      ansible.builtin.include_role:
+        name: ansible-role-template
+        tasks_from: init
+
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+
+...

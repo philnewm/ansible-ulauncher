@@ -1,0 +1,13 @@
+---
+
+# Empty task file to initialize role library and pre-loads all variables
+
+
+- name: Initialize role variables
+  ansible.builtin.include_vars:
+    file: "{{ item }}"
+  with_items:
+    - ../../defaults/main.yml
+    - ../../vars/main.yml
+
+...

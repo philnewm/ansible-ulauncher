@@ -1,0 +1,17 @@
+galaxy_info:
+  role_name: ansible_role_template
+  author: auther_name
+  description: ansible-role-template description
+
+  license: some_license
+
+  min_ansible_version: "2.1"
+
+  platforms:
+  - name: EL
+    versions:
+    - "9"
+
+  galaxy_tags: []
+
+dependencies: []

@@ -1,0 +1,9 @@
+---
+
+# vars file for gnome_config
+
+
+# remove this placeholder
+ansible_role_template: "Default role name still in use."
+
+...
