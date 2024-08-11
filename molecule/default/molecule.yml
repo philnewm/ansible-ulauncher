@@ -13,8 +13,9 @@ lint: |
   ansible-lint
 platforms:
   - name: Alma9
-    box: almalinux/9
-    memory: 2048
+    box: philnewm/alma9-gnome
+    box_version: "0.1.0"
+    memory: 4096
     cpus: 2
     interfaces:
       - auto_config: true
