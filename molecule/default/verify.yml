@@ -6,7 +6,7 @@
   tasks:
     - name: Initialize role library
       ansible.builtin.include_role:
-        name: ansible-role-template
+        name: ansible-ulauncher
         tasks_from: init
 
     - name: Gather package facts
