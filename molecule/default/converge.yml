@@ -7,7 +7,7 @@
   # debugger: on_failed
 
   roles:
-    - role: ansible-role-template
+    - role: ansible-ulauncher
       tasks_from: main
       ansible_role_template_state: present
 

@@ -10,7 +10,7 @@
   tasks:
     # TODO check if VM even exists
   roles:
-    - role: ansible-role-template
+    - role: ansible-ulauncher
       ansible_role_template_state: absent
 
 - name: Cleanup
