@@ -1,6 +1,6 @@
 Role Name
 =========
-[![ci-testing](https://github.com/philnewm/ansible-role-template/actions/workflows/molecule-ci.yml/badge.svg)](https://github.com/philnewm/ansible-role-template/actions/workflows/molecule-ci.yml)
+[![ci-testing](https://github.com/philnewm/ansible-ulauncher/actions/workflows/molecule-ci.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/molecule-ci.yml)
 
 Role description
 
