@@ -8,82 +8,122 @@
 - name: Gather package facts
   ansible.builtin.package_facts:
 
-- name: Clone ulauncher repo from github
+- name: Install Ulauncher and dependencies if not present
+  when: "'ulauncher' not in ansible_facts.packages"
+  block: 
+    - name: Clone ulauncher repo from github
+      ansible.builtin.git:
+        repo: "https://github.com/philnewm/Ulauncher.git"
+        dest: "~/Ulauncher"
+        single_branch: true
+        version: "rpm-build"
+        depth: 1
+      register: git_result
+      until: git_result is succeeded
+      retries: 5
+      delay: 10
+
+    - name: Install build dependencies
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - pip
+          - wmctrl
+          - yarnpkg
+          - rsync
+          - rpm-build
+          - keybinder3
+          - xdg-utils
+          - python3-gobject
+          - python3-dbus
+          - python3-distutils-extra
+          - python3-pyxdg
+          - python3-inotify
+          - python3-websocket-client
+        state: present
+
+    - name: Install Python packages
+      ansible.builtin.pip:
+        name:
+          - wheel
+          - Levenshtein
+          - websocket-client
+
+    - name: Build RPM package
+      ansible.builtin.command:
+        cmd: ./ul build-preferences
+      args:
+        chdir: "~/Ulauncher"
+
+    - name: Build RPM package
+      ansible.builtin.command:
+        cmd: ./ul build-rpm 5.15.7 alma9.4
+      args:
+        chdir: "~/Ulauncher"
+
+    - name: Install Ulauncher
+      become: true
+      ansible.builtin.dnf:
+        name: /tmp/ulauncher_5.15.7_alma9.4.rpm
+        state: present
+        disable_gpg_check: true
+
+    - name: Remove build dependencies
+      become: true
+      ansible.builtin.dnf:
+        name: 
+          - yarnpkg
+          - rsync
+          - rpm-build
+          - python3-distutils-extra
+        state: absent
+
+- name: Ansible check directory
+  ansible.builtin.stat:
+    path: "{{ (ansible_env.HOME, '.config', 'ulauncher') | ansible.builtin.path_join }}"
+  register: settings_dir
+
+- name: "Create settings directory"
+  ansible.builtin.file:
+    path: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'user-themes') | ansible.builtin.path_join }}"
+    state: directory
+    mode: "0755"
+    group: "{{ ansible_effective_group_id }}"
+    owner: "{{ ansible_env.USER }}"
+  when: settings_dir.stat.exists == false
+
+- name: Write app settings
+  ansible.builtin.copy:
+    dest: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'settings.json') | ansible.builtin.path_join }}"
+    content: "{{ ulauncher_settings | to_json(indent=4) }}"
+    mode: "0644"
+
+- name: Write extension settings
+  ansible.builtin.copy:
+    dest: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'extensions.json') | ansible.builtin.path_join }}"
+    content: "{{ ulauncher_extensions | to_json(indent=4) }}"
+    mode: "0644"
+
+- name: Write shortcut settings
+  ansible.builtin.copy:
+    dest: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'shortcuts.json') | ansible.builtin.path_join }}"
+    content: "{}"
+    mode: "0644"
+
+- name: Clone repos from github
   ansible.builtin.git:
-    repo: "https://github.com/Ulauncher/Ulauncher.git"
-    dest: "~/Ulauncher"
+    repo: "{{ item.repo_url }}"
+    dest: "{{ item.download_dir }}"
     single_branch: true
-    version: "5.15.7"
+    version: "{{ item.branch }}"
     depth: 1
-  register: git_result
-  until: git_result is succeeded
-  retries: 5
-  delay: 10
+  loop: "{{ ulauncher_github_repo_theme }}"
 
-- name: Install build dependencies
-  become: true
-  ansible.builtin.dnf:
-    name:
-      - pip
-      - wmctrl
-      - yarnpkg
-      - rsync
-      - rpm-build
-      - keybinder3
-      - python3-gobject
-      - python3-dbus
-      - python3-distutils-extra
-      - python3-pyxdg
-      - python3-inotify
-    state: present
-
-- name: Install Python packages in the virtual environment
-  ansible.builtin.pip:
-    name:
-      - wheel
-      - Levenshtein
-      - websocket
-
-- name: Create a Python virtual environment
-  ansible.builtin.command:
-    cmd: python3.9 -m venv --system-site-packages ~/python_env/ulauncher_build_env/
-  args:
-    creates: ~/python_env/ulauncher_build_env/bin/activate
-
-- name: Build RPM package
-  ansible.builtin.command:
-    cmd: ./ul build-preferences
-  args:
-    chdir: "~/Ulauncher"
-
-# TODO broken in original repo - use fork to fix
-- name: Build RPM package
-  ansible.builtin.command:
-    cmd: ./ul build-rpm 5.15.7 alma9.4
-  args:
-    chdir: "~/Ulauncher"
-
-- name: Install Ulauncher
-  ansible.builtin.dnf:
-    name: /tmp/ulauncher_5.15.7_alma9.4.rpm
-    state: present
-
-- name: Remove osbolete pip packages
-  ansible.builtin.pip:
-    name:
-      - websocket
-    state: absent
-
-- name: Remove build dependencies
-  become: true
-  ansible.builtin.dnf:
-    name: 
-      - yarnpkg
-      - rsync
-      - rpm-build
-      - python3-distutils-extra
-      - python3-pyxdg
-      - python3-inotify
-    state: absent
+- name: Enable and start the ulauncher service
+  ansible.builtin.systemd:
+    name: ulauncher.service
+    state: started
+    enabled: true
+    scope: user
 
 ...
