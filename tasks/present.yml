@@ -47,7 +47,6 @@
         name:
           - wheel
           - Levenshtein
-          - websocket-client
 
     - name: Build RPM package
       ansible.builtin.command:
@@ -71,7 +70,7 @@
     - name: Remove build dependencies
       become: true
       ansible.builtin.dnf:
-        name: 
+        name:
           - yarnpkg
           - rsync
           - rpm-build
@@ -91,6 +90,29 @@
     group: "{{ ansible_effective_group_id }}"
     owner: "{{ ansible_env.USER }}"
   when: settings_dir.stat.exists == false
+
+- name: Get currrent display server
+  ansible.builtin.command:
+    cmd: echo $XDG_SESSION_TYPE
+  register: display_server
+
+- name: Wayland adjustments
+  when: display_server.stdout == 'wayland'
+  block:
+    - name: Update settings for wayland
+      ansible.builtin.set_fact:
+        ulauncher_settings: >-
+          {{
+            ulauncher_settings | combine({
+              "hotkey-show-app": "<Alt>minus"
+            })
+          }}
+
+    - name: Disable Alt+Space for "Activate the Window menu"
+      ansible.builtin.dconf:
+        key: "/org/gnome/desktop/wm/keybindings/activate-window-menu"
+        value: "[]"
+        state: present
 
 - name: Write app settings
   ansible.builtin.copy:
