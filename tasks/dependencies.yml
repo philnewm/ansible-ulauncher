@@ -3,8 +3,29 @@
 # Runs all dependencies
 
 
-# INFO This task may be osbolete for your use-case
-- name: Gather package facts
-  ansible.builtin.package_facts:
+- name: Install build dependencies
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - pip
+      - wmctrl
+      - yarnpkg
+      - rsync
+      - rpm-build
+      - keybinder3
+      - xdg-utils
+      - python3-gobject
+      - python3-dbus
+      - python3-distutils-extra
+      - python3-pyxdg
+      - python3-inotify
+      - python3-websocket-client
+    state: present
+
+- name: Install Python dependencies
+  ansible.builtin.pip:
+    name:
+      - wheel
+      - Levenshtein
 
 ...

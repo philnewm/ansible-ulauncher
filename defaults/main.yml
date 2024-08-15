@@ -2,6 +2,8 @@
 
 # Variables for ansible-role-template
 
+ulauncher_download_path: "~/Ulauncher"
+
 ulauncher_settings:
   "blacklisted-desktop-dirs": "/usr/share/locale:/usr/share/app-install:/usr/share/kservices5:/usr/share/fk5:/usr/share/kservicetypes5:/usr/share/applications/screensavers:/usr/share/kde4:/usr/share/mimelnk"
   "clear-previous-query": true
@@ -39,11 +41,15 @@ ulauncher_github_repo_theme:
     download_dir: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'user-themes', 'omni') | ansible.builtin.path_join }}"
     install_dir: ""
 
-gdm_config_file:
+ulauncher_gdm_config_file:
   "CentOS": "/etc/gdm/custom.conf"
   "AlmaLinux": "/etc/gdm/custom.conf"
   "Rocky": "/etc/gdm/custom.conf"
   "Ubuntu": "/etc/gdm3/custom.conf"
   "Debian": "/etc/gdm3/daemon.conf"
+
+package_search:
+  "RedHat": "dnf list available"
+  "Debian": "apt-cache show"
 
 ...

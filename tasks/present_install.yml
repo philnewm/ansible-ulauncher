@@ -1,0 +1,62 @@
+---
+
+# Ulauncher build and install tasks
+
+
+- name: Clone ulauncher repo from github
+  ansible.builtin.git:
+    repo: "https://github.com/philnewm/Ulauncher.git"
+    dest: "{{ ulauncher_download_path }}"
+    single_branch: true
+    version: "rpm-build"
+    depth: 1
+  register: git_result
+  until: git_result is succeeded
+  retries: 5
+  delay: 10
+
+- name: Include dependencies
+  ansible.builtin.include_tasks:
+    file: dependencies.yml
+
+- name: Build RPM package
+  ansible.builtin.command:
+    cmd: ./ul build-preferences
+  args:
+    chdir: "~/Ulauncher"
+
+- name: Build RPM package
+  ansible.builtin.command:
+    cmd: ./ul build-rpm 5.15.7 alma9.4
+  args:
+    chdir: "~/Ulauncher"
+
+- name: Install Ulauncher
+  become: true
+  ansible.builtin.dnf:
+    name: /tmp/ulauncher_5.15.7_alma9.4.rpm
+    state: present
+    disable_gpg_check: true
+
+- name: Ensure ulauncher service is started
+  ansible.builtin.systemd:
+    name: ulauncher.service
+    state: started
+    scope: user
+
+- name: Remove build dependencies
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - yarnpkg
+      - rsync
+      - rpm-build
+      - python3-distutils-extra
+    state: absent
+
+- name: Remove downloaded repo
+  ansible.builtin.file:
+    path: "{{ ulauncher_download_path }}"
+    state: absent
+
+...
