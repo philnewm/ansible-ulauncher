@@ -22,10 +22,4 @@
       - python3-websocket-client
     state: present
 
-- name: Install Python dependencies
-  ansible.builtin.pip:
-    name:
-      - wheel
-      - Levenshtein
-
 ...
