@@ -2,7 +2,7 @@
 
 [![ci-testing](https://github.com/philnewm/ansible-ulauncher/actions/workflows/molecule-ci.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/molecule-ci.yml)
 
-This role builds and installs [Ulauncher v5](https://github.com/Ulauncher/Ulauncher/tree/v5) on Almalinux. It includes a bunch of custom settings and applies a [forked theme](https://github.com/philnewm/ulauncher_theme).<br>
+This role builds and installs [Ulauncher v5](https://github.com/Ulauncher/Ulauncher/tree/v5). It includes a bunch of custom settings and applies a [forked theme](https://github.com/philnewm/ulauncher_theme).<br>
 It will also work for XOrg and Wayland since this requires a few [adjustments](https://github.com/Ulauncher/Ulauncher/wiki/Hotkey-In-Wayland) when it comes to the configured hotkey.
 
 Additionally the role provides a `present` and and `absent` version. This is to install or uninstall it while also removing settings and unused dependencies.<br>
