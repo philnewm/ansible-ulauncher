@@ -23,6 +23,12 @@
   register: wayland_check
   changed_when: false
 
+- name: Disable Alt+Space for "Activate the Window menu"
+  ansible.builtin.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/activate-window-menu"
+    value: "{{ '@as []' | string }}"
+    state: present
+
 - name: Wayland adjustments
   when: wayland_check.stdout
   block:
@@ -37,29 +43,23 @@
 
 - name: Write app settings
   ansible.builtin.copy:
-    dest: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'settings.json') | ansible.builtin.path_join }}"
+    dest: "{{ (ulauncher_settings_dir, 'settings.json') | ansible.builtin.path_join }}"
     content: "{{ ulauncher_settings | to_json(indent=4) }}"
     mode: "0644"
 
-- name: Disable Alt+Space for "Activate the Window menu"
-  ansible.builtin.dconf:
-    key: "/org/gnome/desktop/wm/keybindings/activate-window-menu"
-    value: "{{ '@as []' | string }}"
-    state: present
-
 - name: Write extension settings
   ansible.builtin.copy:
-    dest: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'extensions.json') | ansible.builtin.path_join }}"
+    dest: "{{ (ulauncher_settings_dir, 'extensions.json') | ansible.builtin.path_join }}"
     content: "{{ ulauncher_extensions | to_json(indent=4) }}"
     mode: "0644"
 
 - name: Write shortcut settings
   ansible.builtin.copy:
-    dest: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'shortcuts.json') | ansible.builtin.path_join }}"
+    dest: "{{ (ulauncher_settings_dir, 'shortcuts.json') | ansible.builtin.path_join }}"
     content: "{}"
     mode: "0644"
 
-- name: Clone repos from github
+- name: Clone theme repos from github
   ansible.builtin.git:
     repo: "{{ item.repo_url }}"
     dest: "{{ item.download_dir }}"

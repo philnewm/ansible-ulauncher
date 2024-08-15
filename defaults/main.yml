@@ -40,7 +40,7 @@ ulauncher_github_repo_theme:
     repo_url: "https://github.com/philnewm/ulauncher_theme.git"
     branch: "main"
     install_cmd: ""
-    download_dir: "{{ (ansible_env.HOME, '.config', 'ulauncher', 'user-themes', 'omni') | ansible.builtin.path_join }}"
+    download_dir: "{{ (ulauncher_themes_dir, 'omni') | ansible.builtin.path_join }}"
     install_dir: ""
 
 ulauncher_gdm_config_file:

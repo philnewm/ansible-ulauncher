@@ -3,6 +3,16 @@
 # Tasks to remove ansible-role-template
 
 
+- name: Uninstall ulauncher
+  become: true
+  ansible.builtin.package:
+    name: ulauncher
+    state: absent
+
+- name: Remove ulauncher settings
+  ansible.builtin.file:
+    path: "{{ ulauncher_themes_dir }}"
+
 - name: Remove unused dependencies
   become: true
   ansible.builtin.package:

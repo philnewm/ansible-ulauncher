@@ -1,9 +1,9 @@
 galaxy_info:
-  role_name: ansible_role_template
-  author: auther_name
-  description: ansible-role-template description
+  role_name: ulauncher
+  author: philnewm
+  description: Build and Install Ulauncher using a bunch of custom settings.
 
-  license: some_license
+  license: MIT
 
   min_ansible_version: "2.1"
 

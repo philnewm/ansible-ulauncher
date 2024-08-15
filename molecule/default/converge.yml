@@ -3,9 +3,6 @@
 - name: Create and configure ansible-role-template
   hosts: client
 
-  # TODO local testing only
-  # debugger: on_failed
-
   roles:
     - role: ansible-ulauncher
       tasks_from: main
