@@ -91,13 +91,19 @@
     owner: "{{ ansible_env.USER }}"
   when: settings_dir.stat.exists == false
 
-- name: Get currrent display server
-  ansible.builtin.command:
-    cmd: echo $XDG_SESSION_TYPE
+- name: Get currrent display server from "{{ gdm_config_file[ansible_distribution] }}"
+  ansible.builtin.lineinfile:
+    path: "{{ gdm_config_file[ansible_distribution] }}"
+    line: "WaylandEnable=true"
+    state: present
+    regexp: "^WaylandEnable="
+    backrefs: yes
+  check_mode: yes
   register: display_server
+  changed_when: false
 
 - name: Wayland adjustments
-  when: display_server.stdout == 'wayland'
+  when: display_server
   block:
     - name: Update settings for wayland
       ansible.builtin.set_fact:
