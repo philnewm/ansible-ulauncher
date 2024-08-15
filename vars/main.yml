@@ -4,19 +4,21 @@
 
 
 ulauncher_global_dependencies:
-  - pip
   - wmctrl
-  - yarnpkg
-  - rsync
-  - rpm-build
   - keybinder3
   - xdg-utils
   - python3-gobject
   - python3-dbus
-  - python3-distutils-extra
   - python3-pyxdg
   - python3-inotify
   - python3-websocket-client
+
+ulauncher_build_dependencies:
+  - pip
+  - python3-distutils-extra
+  - rpm-build
+  - rsync
+  - yarnpkg
 
 ulauncher_pip_dependencies:
   - wheel

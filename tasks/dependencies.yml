@@ -3,9 +3,14 @@
 # Runs all dependencies
 
 
-- name: Install build dependencies
+- name: Add build dependencies
+  when: repo_check.stderr
+  ansible.builtin.set_fact:
+    ulauncher_global_dependencies: "{{ ulauncher_global_dependencies | combine(ulauncher_build_dependencies) }}"
+
+- name: Install global dependencies
   become: true
-  ansible.builtin.dnf:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   loop: "{{ ulauncher_global_dependencies }}"

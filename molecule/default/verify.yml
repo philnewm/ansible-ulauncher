@@ -4,12 +4,56 @@
   hosts: client
 
   tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+
     - name: Initialize role library
       ansible.builtin.include_role:
         name: ansible-ulauncher
         tasks_from: init
 
-    - name: Gather package facts
-      ansible.builtin.package_facts:
+    - name: Test installed global dependencies
+      loop: "{{ ulauncher_global_dependencies }}"
+      ansible.builtin.assert:
+        that:
+          - item in ansible_facts.packages
+        fail_msg: "Required package '{{ item }}' is missing."
+        quiet: true
+
+    - name: Test installed ulauncher
+      ansible.builtin.assert:
+        that:
+          - "'ulauncher' in ansible_facts.packages"
+        fail_msg: "Ulauncher' is not installed."
+        quiet: true
+
+    - name: Start Ulauncher
+      ansible.builtin.shell:
+        cmd: ulauncher || true
+      register: ulauncher_command
+      changed_when: false
+
+    - name: Test ulauncher output
+      ansible.builtin.assert:
+        that:
+          - "'Can\\'t create a GtkStyleContext without a display connection' in ulauncher_command.stderr"
+        fail_msg: "Ulauncher failed to start with error {{ ulauncher_command.stderr }}."
+        quiet: true
+
+    - name: Load the JSON file into a variable
+      ansible.builtin.slurp:
+        src: "{{ ulauncher_settings_dir }}/settings.json"
+      register: settings_file_content
+
+    - name: Parse the JSON file content
+      ansible.builtin.set_fact:
+        file_settings: "{{ settings_file_content.content | b64decode | from_json }}"
+
+    - name: Verify that the JSON file content matches the settings variable
+      ansible.builtin.assert:
+        that:
+          - file_settings == ulauncher_settings
+        fail_msg: "The settings in the JSON file do not match the expected settings from ulauncher_settings."
+        quiet: true
 
 ...

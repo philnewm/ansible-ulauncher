@@ -3,6 +3,8 @@
 # Variables for ansible-role-template
 
 ulauncher_download_path: "~/Ulauncher"
+ulauncher_settings_dir: "{{ (ansible_env.HOME, '.config', 'ulauncher') | ansible.builtin.path_join }}"
+ulauncher_themes_dir: "{{ (ulauncher_settings_dir, 'user-themes') | ansible.builtin.path_join }}"
 
 ulauncher_settings:
   "blacklisted-desktop-dirs": "/usr/share/locale:/usr/share/app-install:/usr/share/kservices5:/usr/share/fk5:/usr/share/kservicetypes5:/usr/share/applications/screensavers:/usr/share/kde4:/usr/share/mimelnk"
