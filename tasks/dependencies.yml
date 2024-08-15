@@ -6,20 +6,13 @@
 - name: Install build dependencies
   become: true
   ansible.builtin.dnf:
-    name:
-      - pip
-      - wmctrl
-      - yarnpkg
-      - rsync
-      - rpm-build
-      - keybinder3
-      - xdg-utils
-      - python3-gobject
-      - python3-dbus
-      - python3-distutils-extra
-      - python3-pyxdg
-      - python3-inotify
-      - python3-websocket-client
+    name: "{{ item }}"
     state: present
+  loop: "{{ ulauncher_global_dependencies }}"
+
+- name: Install Python dependencies
+  ansible.builtin.pip:
+    name: "{{ item }}"
+  loop: "{{ ulauncher_pip_dependencies }}"
 
 ...

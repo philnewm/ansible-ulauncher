@@ -1,9 +1,25 @@
 ---
 
-# vars file for gnome_config
+# vars file for ansible-ulauncher
 
 
-# remove this placeholder
-ansible_role_template: "Default role name still in use."
+ulauncher_global_dependencies:
+  - pip
+  - wmctrl
+  - yarnpkg
+  - rsync
+  - rpm-build
+  - keybinder3
+  - xdg-utils
+  - python3-gobject
+  - python3-dbus
+  - python3-distutils-extra
+  - python3-pyxdg
+  - python3-inotify
+  - python3-websocket-client
+
+ulauncher_pip_dependencies:
+  - wheel
+  - Levenshtein
 
 ...
