@@ -5,10 +5,10 @@
 
 - name: Clone ulauncher repo from github
   ansible.builtin.git:
-    repo: "https://github.com/philnewm/Ulauncher.git"
+    repo: "https://github.com/Ulauncher/Ulauncher.git"
     dest: "{{ ulauncher_download_path }}"
     single_branch: true
-    version: "rpm-build"
+    version: "5c5983c"
     depth: 1
   register: git_result
   until: git_result is succeeded
