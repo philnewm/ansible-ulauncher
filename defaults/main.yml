@@ -2,6 +2,8 @@
 
 # Variables for ansible-role-template
 
+state: present
+
 ulauncher_download_path: "~/Ulauncher"
 ulauncher_settings_dir: "{{ (ansible_env.HOME, '.config', 'ulauncher') | ansible.builtin.path_join }}"
 ulauncher_themes_dir: "{{ (ulauncher_settings_dir, 'user-themes') | ansible.builtin.path_join }}"
