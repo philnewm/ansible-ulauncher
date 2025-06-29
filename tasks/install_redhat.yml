@@ -1,8 +1,5 @@
 ---
 
-# Ulauncher build and install tasks
-
-
 - name: Clone ulauncher repo from github
   ansible.builtin.git:
     repo: "https://github.com/Ulauncher/Ulauncher.git"
@@ -25,22 +22,18 @@
 
 - name: Build RPM package
   ansible.builtin.command:
-    cmd: ./ul build-rpm 5.15.7 alma9.4
+    cmd: "./ul build-rpm 5.15.7 {{ ansible_distribution | lower }}{{ ansible_distribution_version }}"
   args:
     chdir: "~/Ulauncher"
 
 - name: Install Ulauncher
   become: true
   ansible.builtin.dnf:
-    name: /tmp/ulauncher_5.15.7_alma9.4.rpm
+    name: /tmp/ulauncher_5.15.7_{{ ansible_distribution | lower }}{{ ansible_distribution_version }}.rpm
     state: present
     disable_gpg_check: true
 
-- name: Ensure ulauncher service is started
-  ansible.builtin.systemd:
-    name: ulauncher.service
-    state: started
-    scope: user
+# INFO ulauncher.service startup fails in terminal session
 
 - name: Remove build dependencies
   become: true

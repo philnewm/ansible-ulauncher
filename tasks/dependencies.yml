@@ -1,10 +1,6 @@
 ---
 
-# Runs all dependencies
-
-
 - name: Add build dependencies
-  when: repo_check.stderr
   ansible.builtin.set_fact:
     ulauncher_global_dependencies: "{{ ulauncher_global_dependencies + ulauncher_build_dependencies }}"
 

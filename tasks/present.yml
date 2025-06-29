@@ -1,44 +1,25 @@
 ---
 
-# Tasks to install ulauncher
-
-
 - name: Gather package facts
   ansible.builtin.package_facts:
 
 - name: Decide install method
   when: "'ulauncher' not in ansible_facts.packages"
   block:
-    - name: Check if ulauncher is available in distro repository
-      ansible.builtin.shell: 
-        cmd: "{{ package_search[ansible_os_family] }} ulauncher || true"
-      register: repo_check
-      changed_when: false
-
-    - name: Include dependencies
+    - name: Installation Ulauncher for debian based distros
+      when: ansible_os_family == "Debian"
       ansible.builtin.include_tasks:
-        file: dependencies.yml
+        file: "install_{{ ansible_distribution | lower }}.yml"
 
-    - name: Install from distro repo
-      when: not repo_check.stderr
-      become: true
-      ansible.builtin.package:
-        name: ulauncher
-        state: present
-
-    - name: Include Ulauncher installation
-      when: repo_check.stderr
+    - name: Installation Ulauncher for redhat based distros
+      when: ansible_os_family == "RedHat"
       ansible.builtin.include_tasks:
-        file: present_install.yml
-
-- name: Include configuration
-  ansible.builtin.include_tasks:
-    file: present_configure.yml
+        file: "install_{{ ansible_os_family | lower }}.yml"
 
 - name: Ensure ulauncher service is enabled
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: ulauncher.service
     enabled: true
-    scope: user
+    scope: "user"
 
 ...

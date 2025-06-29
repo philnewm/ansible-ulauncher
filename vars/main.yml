@@ -1,8 +1,5 @@
 ---
 
-# vars file for ansible-ulauncher
-
-
 ulauncher_global_dependencies:
   - wmctrl
   - keybinder3

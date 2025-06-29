@@ -1,7 +1,7 @@
 galaxy_info:
   role_name: ulauncher
   author: philnewm
-  description: Build and Install Ulauncher using a bunch of custom settings.
+  description: Build and/or Install Ulauncher.
 
   license: MIT
 
@@ -11,6 +11,12 @@ galaxy_info:
   - name: EL
     versions:
     - "9"
+  - name: Debian
+    versions:
+      - "bookworm"
+  - name: "Ubuntu"
+    versions:
+      - "jammy"
 
   galaxy_tags: []
 

@@ -1,0 +1,29 @@
+---
+
+- name: Enable 'universe' repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} universe"
+    state: present
+    filename: "universe"
+
+- name: Add Ulauncher PPA
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "ppa:agornostal/ulauncher"
+    state: present
+
+- name: Update appackaget cache
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install ulauncher
+  become: true
+  ansible.builtin.apt:
+    name: ulauncher
+    state: present
+
+# INFO ulauncher.service startup fails in terminal session
+
+...
