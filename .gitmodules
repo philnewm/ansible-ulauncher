@@ -1,4 +1,4 @@
 [submodule "molecule"]
 	path = molecule
-	url = git@github.com:philnewm/molecule-gnome-desktop.git
+	url = https://github.com/philnewm/molecule-gnome-desktop.git
 	branch = main
