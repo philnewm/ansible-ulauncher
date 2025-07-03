@@ -9,6 +9,7 @@ ulauncher_global_dependencies:
   - python3-pyxdg
   - python3-inotify
   - python3-websocket-client
+  - git
 
 ulauncher_build_dependencies:
   - pip
@@ -16,7 +17,6 @@ ulauncher_build_dependencies:
   - rpm-build
   - rsync
   - yarnpkg
-  - git
 
 ulauncher_pip_dependencies:
   - wheel
