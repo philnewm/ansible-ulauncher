@@ -16,6 +16,7 @@ ulauncher_build_dependencies:
   - rpm-build
   - rsync
   - yarnpkg
+  - git
 
 ulauncher_pip_dependencies:
   - wheel
