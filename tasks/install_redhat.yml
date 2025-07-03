@@ -1,5 +1,9 @@
 ---
 
+- name: Include dependencies
+  ansible.builtin.include_tasks:
+    file: dependencies.yml
+
 - name: Clone ulauncher repo from github
   ansible.builtin.git:
     repo: "https://github.com/Ulauncher/Ulauncher.git"
@@ -9,10 +13,6 @@
   until: git_result is succeeded
   retries: 5
   delay: 10
-
-- name: Include dependencies
-  ansible.builtin.include_tasks:
-    file: dependencies.yml
 
 - name: Build RPM package
   ansible.builtin.command:
