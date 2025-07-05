@@ -4,6 +4,14 @@
   ansible.builtin.set_fact:
     ulauncher_global_dependencies: "{{ ulauncher_global_dependencies + ulauncher_build_dependencies }}"
 
+- name: Add epel repo
+  become: true
+  when: ansible_os_family == "RedHat"
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present
+    update_cache: true
+
 - name: Install global dependencies
   become: true
   ansible.builtin.package:
