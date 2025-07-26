@@ -16,10 +16,4 @@
       ansible.builtin.include_tasks:
         file: "install_{{ ansible_os_family | lower }}.yml"
 
-- name: Ensure ulauncher service is enabled
-  ansible.builtin.systemd_service:
-    name: ulauncher.service
-    enabled: true
-    scope: "user"
-
 ...
