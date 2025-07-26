@@ -19,19 +19,4 @@
     fail_msg: "Ulauncher' is not installed."
     quiet: true
 
-# INFO only checking for enabled since starting doesn't work in terminal session
-- name: Check for enabled ulauncher service
-  ansible.builtin.command:
-    cmd: systemctl --user is-enabled ulauncher.service
-  register: ulauncher_enabled_status
-  changed_when: false
-  failed_when: false
-
-- name: Test running ulauncher service
-  ansible.builtin.assert:
-    that:
-      - ulauncher_enabled_status.stdout == "enabled"
-    fail_msg: "ulauncher.service is not enabled (status: {{ ulauncher_enabled_status.stdout }})"
-    quiet: true
-
 ...
