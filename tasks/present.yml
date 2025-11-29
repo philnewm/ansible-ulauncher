@@ -13,7 +13,7 @@
 
     - name: Install Ulauncher on fedora
       become: true
-      when: ansible_os_distribution | lower == "fedora"
+      when: ansible_distribution | lower == "fedora"
       ansible.builtin.dnf:
         name: "ulauncher"
         state: present
