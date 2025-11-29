@@ -1,5 +1,11 @@
 ---
 
+ulauncher_rhel_derivatives:
+  - redhat
+  - centos
+  - almalinux
+  - rocky
+
 ulauncher_global_dependencies:
   - wmctrl
   - keybinder3

@@ -13,7 +13,7 @@
     repo: "ppa:agornostal/ulauncher"
     state: present
 
-- name: Update appackaget cache
+- name: Update package cache
   become: true
   ansible.builtin.apt:
     update_cache: true
@@ -23,7 +23,5 @@
   ansible.builtin.apt:
     name: ulauncher
     state: present
-
-# INFO ulauncher.service startup fails in terminal session
 
 ...
