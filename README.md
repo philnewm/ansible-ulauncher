@@ -1,6 +1,6 @@
 # Ulauncher Ansible Role
 
-[![Alma9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/alma9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/alma9-ci-caller.yml) [![Rocky9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/rocky9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/rocky9-ci-caller.yml) [![CentOSStream9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/centosstream9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/centosstream9-ci-caller.yml) [![Fedora43-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/fedora43-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/fedora43-ci-caller.yml)<br>
+[![AlmaLinux9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/almalinux9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/almalinux9-ci-caller.yml) [![Rocky9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/rocky9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/rocky9-ci-caller.yml) [![CentOSStream9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/centosstream9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/centosstream9-ci-caller.yml) [![Fedora43-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/fedora43-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/fedora43-ci-caller.yml)<br>
 [![Ubuntu2404-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/ubuntu2404-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/ubuntu2404-ci-caller.yml) [![Debian13-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/debian13-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/debian13-ci-caller.yml)
 
 This role builds and installs [Ulauncher v5](https://github.com/Ulauncher/Ulauncher/tree/v5).
@@ -23,17 +23,17 @@ This role includes a molecule testing setup at `molecule`
  ┃   ┗ 📜, 📜, 📜, scenario_files
  ┣ 📂 tasks
  ┃ ┣ 📜 absent.yml
- ┃ ┣ 📜 dependencies.yml
  ┃ ┣ 📜 install_debian.yml
+ ┃ ┣ 📜 install_fedora.yml
  ┃ ┣ 📜 install_redhat.yml
  ┃ ┣ 📜 install_ubuntu.yml
  ┃ ┣ 📜 main.yml
  ┃ ┣ 📜 present.yml
+ ┃ ┣ 📜 rhel_dependencies.yml
  ┃ ┗ 📜 tests.yml
  ┣ 📂 vars
  ┃ ┗ 📜 main.yml
  ┗ 🗒️ README.md
- ┗ 📓 requirements.txt
 
 ```
 
