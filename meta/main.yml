@@ -2,22 +2,20 @@ galaxy_info:
   role_name: ulauncher
   author: philnewm
   description: Build and/or Install Ulauncher.
-
   license: MIT
-
   min_ansible_version: "2.1"
-
   platforms:
   - name: EL
     versions:
     - "9"
+  - name: Fedora
+    versions:
+      - "43"
   - name: Debian
     versions:
-      - "bookworm"
+      - "trixie"
   - name: "Ubuntu"
     versions:
-      - "jammy"
-
+      - "noble"
   galaxy_tags: []
-
 dependencies: []

@@ -6,7 +6,6 @@
 
 - name: Add epel repo
   become: true
-  when: ansible_os_family == "RedHat"
   ansible.builtin.dnf:
     name: epel-release
     state: present

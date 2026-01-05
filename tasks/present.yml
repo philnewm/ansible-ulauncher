@@ -3,24 +3,9 @@
 - name: Gather package facts
   ansible.builtin.package_facts:
 
-- name: Decide install method
+- name: Install Ulauncher on based on distro
   when: "'ulauncher' not in ansible_facts.packages"
-  block:
-    - name: Install Ulauncher on debian based distros
-      when: ansible_os_family == "Debian"
-      ansible.builtin.include_tasks:
-        file: "install_{{ ansible_distribution | lower }}.yml"
-
-    - name: Install Ulauncher on fedora
-      become: true
-      when: ansible_distribution | lower == "fedora"
-      ansible.builtin.dnf:
-        name: "ulauncher"
-        state: present
-
-    - name: Install Ulauncher on redhat based distros
-      when: ansible_distribution | lower in ulauncher_rhel_derivatives
-      ansible.builtin.include_tasks:
-        file: "install_{{ ansible_os_family | lower }}.yml"
+  ansible.builtin.include_tasks:
+    file: "install_{{ ulauncher_install_matrix[ansible_facts.distribution | lower] }}.yml"
 
 ...

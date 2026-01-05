@@ -15,8 +15,9 @@
     creates: "/root/.gnupg/pubring.kbx"
 
 - name: Export Ulauncher GPG key to keyring
+  become: true
   ansible.builtin.command:
-    cmd: "gpg --export 0xfaf1020699503176"
+    cmd: "gpg --armor --export 0xfaf1020699503176"
   register: ulauncher_gpg_key
   changed_when: false
 
@@ -24,16 +25,18 @@
   become: true
   when: ulauncher_gpg_key.stdout != ""
   ansible.builtin.copy:
-    content: "{{ ulauncher_gpg_key.stdout | b64decode }}"
+    content: "{{ ulauncher_gpg_key.stdout }}"
     dest: /usr/share/keyrings/ulauncher-archive-keyring.gpg
     mode: '0644'
 
 - name: Add Ulauncher apt repository
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/ulauncher-archive-keyring.gpg] http://ppa.launchpad.net/agornostal/ulauncher/ubuntu jammy main"
+    repo: |
+      deb [signed-by=/usr/share/keyrings/ulauncher-archive-keyring.gpg]
+      http://ppa.launchpad.net/agornostal/ulauncher/ubuntu {{ ulauncher_debian_to_ubuntu_map[ansible_facts.distribution_release | lower] }} main
     state: present
-    filename: "ulauncher-jammy"
+    filename: "ulauncher-{{ ulauncher_debian_to_ubuntu_map[ansible_facts.distribution_release | lower] }}"
 
 - name: Update package cache
   become: true

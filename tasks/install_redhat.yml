@@ -2,7 +2,7 @@
 
 - name: Include dependencies
   ansible.builtin.include_tasks:
-    file: dependencies.yml
+    file: rhel_dependencies.yml
 
 - name: Clone ulauncher repo from github
   ansible.builtin.git:
@@ -22,14 +22,14 @@
 
 - name: Build RPM package
   ansible.builtin.command:
-    cmd: "./ul build-rpm 5.15.7 {{ ansible_distribution | lower }}{{ ansible_distribution_version }}"
+    cmd: "./ul build-rpm 5.15.7 {{ ansible_facts.distribution | lower }}{{ ansible_facts.distribution_version }}"
   args:
     chdir: "~/Ulauncher"
 
 - name: Install Ulauncher
   become: true
   ansible.builtin.dnf:
-    name: /tmp/ulauncher_5.15.7_{{ ansible_distribution | lower }}{{ ansible_distribution_version }}.rpm
+    name: /tmp/ulauncher_5.15.7_{{ ansible_facts.distribution | lower }}{{ ansible_facts.distribution_version }}.rpm
     state: present
     disable_gpg_check: true
 
