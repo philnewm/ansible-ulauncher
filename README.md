@@ -1,14 +1,14 @@
 # Ulauncher Ansible Role
 
-[![Alma9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/alma9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/alma9-ci-caller.yml) [![Rocky9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/rocky9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/rocky9-ci-caller.yml) [![CentOSStream9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/centosstream9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/centosstream9-ci-caller.yml) [![Debian12-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/debian12-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/debian12-ci-caller.yml) [![Ubuntu2204-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/ubuntu2204-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/ubuntu2204-ci-caller.yml)
+[![Alma9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/alma9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/alma9-ci-caller.yml) [![Rocky9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/rocky9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/rocky9-ci-caller.yml) [![CentOSStream9-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/centosstream9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/centosstream9-ci-caller.yml) [![Fedora43-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/fedora43-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/fedora43-ci-caller.yml)<br>
+[![Ubuntu2404-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/ubuntu2404-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/ubuntu2404-ci-caller.yml) [![Debian13-CI](https://github.com/philnewm/ansible-ulauncher/actions/workflows/debian13-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-ulauncher/actions/workflows/debian13-ci-caller.yml)
 
-This role builds and installs [Ulauncher v5](https://github.com/Ulauncher/Ulauncher/tree/v5). It includes a bunch of custom settings and applies a [forked theme](https://github.com/philnewm/ulauncher_theme).<br>
-It will also work for XOrg and Wayland since this requires a few [adjustments](https://github.com/Ulauncher/Ulauncher/wiki/Hotkey-In-Wayland) when it comes to the configured hotkey.
+This role builds and installs [Ulauncher v5](https://github.com/Ulauncher/Ulauncher/tree/v5).
 
-Additionally the role provides a `present` and and `absent` version. This is to install or uninstall it while also removing settings and unused dependencies.<br>
-This can be utilized by providing the state variable to the role, check the end of this file for an example.
+Additionally, the role provides a `present` and `absent` version. This is to install or uninstall.<br>
+This can be utilized by providing the state variable to the role, check the end of this README for an example.
 
-This role includes a full vagrant based molecule testing setup at `molecule/`
+This role includes a molecule testing setup at `molecule`
 
 ## Structure
 
@@ -44,7 +44,7 @@ This split-up keeps the task-files shorter and more easy to read due to logical 
 ## Requirements
 
 Check the [Ulauncher website](https://ulauncher.io/#Download) for distros supported out-of-the-box.<br>
-Additonally these are the dependencies for Almalinux9.4 
+Additonally, these are the dependencies for Almalinux9
 
 Global dependencies
 
@@ -56,6 +56,7 @@ Global dependencies
 * python3-pyxdg
 * python3-inotify
 * python3-websocket-client
+* webkit2gtk3
 
 Build dependencies - will be removed after build if they are unused
 
@@ -73,7 +74,7 @@ Python packages
 ## Role Variables
 
 * defaults/main.yml
-  * state - Desired state for ulauncher 
+  * state - Desired state for ulauncher
   * ulauncher_download_path - custome download path for git repository
   * package_search - contains package search command per os family
 

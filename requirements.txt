@@ -1,2 +1,0 @@
-wheel==0.43.0
-Levenshtein==0.25.1
