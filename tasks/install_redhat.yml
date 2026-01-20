@@ -18,13 +18,13 @@
   ansible.builtin.command:
     cmd: ./ul build-preferences
   args:
-    chdir: "~/Ulauncher"
+    chdir: "{{ ulauncher_download_path }}"
 
 - name: Build rpm package
   ansible.builtin.command:
     cmd: "./ul build-rpm 5.15.7 {{ ansible_facts.distribution | lower }}{{ ansible_facts.distribution_version }}"
   args:
-    chdir: "~/Ulauncher"
+    chdir: "{{ ulauncher_download_path }}"
 
 - name: Install Ulauncher
   become: true
