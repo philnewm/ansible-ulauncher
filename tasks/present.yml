@@ -8,4 +8,40 @@
   ansible.builtin.include_tasks:
     file: "install_{{ ulauncher_install_matrix[ansible_facts.distribution | lower] }}.yml"
 
+- name: Ensure gnome hotkey overwrite is present
+  when: "'gnome-shell' in ansible_facts.packages"
+  block:
+    - name: Ensure system-wide gnome defaults directory exist
+      become: true
+      ansible.builtin.file:
+        path: "{{ ulauncher_gnome_systemwide_default_base | dirname }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Disable Alt+Space for 'Activate the Window menu'
+      become: true
+      community.general.ini_file:
+        path: "{{ ulauncher_gnome_systemwide_default_base }}"
+        section: "org/gnome/desktop/wm/keybindings"
+        option: "activate-window-menu"
+        value: "{{ '@as []' | string }}"
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Update dconf
+
+- name: Get current display server
+  ansible.builtin.command:
+    cmd: "grep '^#WaylandEnable=false' /etc/gdm/custom.conf"
+  register: wayland_check
+  changed_when: false
+  failed_when: false
+
+- name: "Include wayland adjustments "
+  when: wayland_check.rc == 0 and 'gnome-shell' in ansible_facts.packages
+  ansible.builtin.include_tasks:
+    file: wayland_config.yml
+
 ...

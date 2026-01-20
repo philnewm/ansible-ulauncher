@@ -14,13 +14,13 @@
   retries: 5
   delay: 10
 
-- name: Build RPM package
+- name: Build rpm package
   ansible.builtin.command:
     cmd: ./ul build-preferences
   args:
     chdir: "~/Ulauncher"
 
-- name: Build RPM package
+- name: Build rpm package
   ansible.builtin.command:
     cmd: "./ul build-rpm 5.15.7 {{ ansible_facts.distribution | lower }}{{ ansible_facts.distribution_version }}"
   args:
@@ -32,8 +32,6 @@
     name: /tmp/ulauncher_5.15.7_{{ ansible_facts.distribution | lower }}{{ ansible_facts.distribution_version }}.rpm
     state: present
     disable_gpg_check: true
-
-# INFO ulauncher.service startup fails in terminal session
 
 - name: Remove build dependencies
   become: true

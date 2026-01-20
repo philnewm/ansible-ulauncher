@@ -2,10 +2,20 @@
 
 state: present
 
-ulauncher_download_path: "~/Ulauncher"
-
 package_search:
   "RedHat": "dnf list available"
   "Debian": "apt-cache show"
+
+ulauncher_download_path: "~/ulauncher"
+ulauncher_gnome_systemwide_default_base: "/etc/dconf/db/local.d/00-gnome-base"
+ulauncher_hotkey_dconf_path: "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ulauncher"
+ulauncher_default_shortcut: "<Alt>space"
+ulauncher_hotkey_parameters:
+  - name: "name"
+    value: "'Ulauncher'"
+  - name: "command"
+    value: "'ulauncher-toggle'"
+  - name: "binding"
+    value: "'{{ ulauncher_default_shortcut }}'"
 
 ...

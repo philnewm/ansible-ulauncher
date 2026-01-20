@@ -1,0 +1,70 @@
+---
+
+# https://github.com/Ulauncher/Ulauncher/wiki/Hotkey-In-Wayland
+- name: Install wayland dependency
+  become: true
+  when: "'wmctrl' not in ansible_facts.packages"
+  ansible.builtin.package:
+    name: wmctrl
+    state: present
+
+- name: Read gnome defaults file from remote
+  ansible.builtin.slurp:
+    src: "{{ ulauncher_gnome_systemwide_default_base }}"
+  register: gnome_defaults_raw
+
+- name: Parse ini content
+  ansible.builtin.set_fact:
+    gnome_settings_raw: >-
+      {{
+        gnome_defaults_raw.content
+        | b64decode
+        | community.general.from_ini
+      }}
+
+- name: Get custom keybindings as list safely
+  ansible.builtin.set_fact:
+    custom_keybindings: >-
+      {{
+        (gnome_settings_raw.get('org/gnome/settings-daemon/plugins/media-keys', {}).get('custom-keybindings', '[]'))
+        | from_yaml
+      }}
+
+- name: Ensure ulauncher entry is present
+  when: "'/' ~ ulauncher_hotkey_dconf_path ~ '/' not in custom_keybindings"
+  ansible.builtin.set_fact:
+    custom_keybindings: >-
+      {{
+        custom_keybindings
+        + ["/" ~ ulauncher_hotkey_dconf_path ~ "/"]
+      }}
+
+- name: Add ulauncher shortcut entry
+  become: true
+  community.general.ini_file:
+    path: "{{ ulauncher_gnome_systemwide_default_base }}"
+    section: "org/gnome/settings-daemon/plugins/media-keys"
+    option: "custom-keybindings"
+    value: "{{ custom_keybindings | string }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Update dconf
+
+- name: Write ulauncher hotkey parameters
+  become: true
+  loop: "{{ ulauncher_hotkey_parameters }}"
+  loop_control:
+    loop_var: param
+    label: "{{ param.name }}"
+  community.general.ini_file:
+    path: "{{ ulauncher_gnome_systemwide_default_base }}"
+    section: "{{ ulauncher_hotkey_dconf_path | regex_replace('/$', '') }}"
+    option: "{{ param.name }}"
+    value: "{{ param.value | string }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Update dconf
+
+...
