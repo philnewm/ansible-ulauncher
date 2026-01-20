@@ -30,10 +30,12 @@ This role includes a molecule testing setup at `molecule`
  ┃ ┣ 📜 main.yml
  ┃ ┣ 📜 present.yml
  ┃ ┣ 📜 rhel_dependencies.yml
- ┃ ┗ 📜 tests.yml
+ ┃ ┣ 📜 tests.yml
+ ┃ ┗ 📜 wayland_config.yml
  ┣ 📂 vars
  ┃ ┗ 📜 main.yml
  ┗ 🗒️ README.md
+ ┗ 📜 requirements.yml
 
 ```
 
