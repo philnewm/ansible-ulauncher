@@ -6,29 +6,6 @@ ulauncher_rhel_derivatives:
   - almalinux
   - rocky
 
-ulauncher_global_dependencies:
-  - wmctrl
-  - keybinder3
-  - xdg-utils
-  - python3-gobject
-  - python3-dbus
-  - python3-pyxdg
-  - python3-inotify
-  - python3-websocket-client
-  - webkit2gtk3
-  - git
-
-ulauncher_build_dependencies:
-  - pip
-  - python3-distutils-extra
-  - rpm-build
-  - rsync
-  - yarnpkg
-
-ulauncher_pip_dependencies:
-  - wheel
-  - Levenshtein
-
 ulauncher_install_matrix:
   "redhat": "redhat"
   "almalinux": "redhat"

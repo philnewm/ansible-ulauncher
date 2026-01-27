@@ -1,51 +1,10 @@
 ---
 
-- name: Include dependencies
-  ansible.builtin.include_tasks:
-    file: rhel_dependencies.yml
-
-- name: Clone ulauncher repo from github
-  ansible.builtin.git:
-    repo: "https://github.com/Ulauncher/Ulauncher.git"
-    dest: "{{ ulauncher_download_path }}"
-    version: "5c5983c"
-  register: git_result
-  until: git_result is succeeded
-  retries: 5
-  delay: 10
-
-- name: Build rpm package
-  ansible.builtin.command:
-    cmd: ./ul build-preferences
-  args:
-    chdir: "{{ ulauncher_download_path }}"
-
-- name: Build rpm package
-  ansible.builtin.command:
-    cmd: "./ul build-rpm 5.15.7 {{ ansible_facts.distribution | lower }}{{ ansible_facts.distribution_version }}"
-  args:
-    chdir: "{{ ulauncher_download_path }}"
-
 - name: Install Ulauncher
   become: true
   ansible.builtin.dnf:
-    name: /tmp/ulauncher_5.15.7_{{ ansible_facts.distribution | lower }}{{ ansible_facts.distribution_version }}.rpm
+    name: "{{ ulauncher_rpm_src_url }}"
     state: present
     disable_gpg_check: true
-
-- name: Remove build dependencies
-  become: true
-  ansible.builtin.dnf:
-    name:
-      - yarnpkg
-      - rsync
-      - rpm-build
-      - python3-distutils-extra
-    state: absent
-
-- name: Remove downloaded repo
-  ansible.builtin.file:
-    path: "{{ ulauncher_download_path }}"
-    state: absent
 
 ...
