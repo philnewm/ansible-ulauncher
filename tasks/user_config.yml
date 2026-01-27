@@ -1,0 +1,70 @@
+---
+
+- name: Ensure unzip is available
+  become: true
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
+- name: Ensure ulauncher user service directory exists
+  become: true
+  ansible.builtin.file:
+    path: "/etc/skel/.config/systemd/user/graphical-session.target.wants"
+    state: directory
+    mode: "0755"
+
+- name: Enable ulauncher service via symlink
+  become: true
+  ansible.builtin.file:
+    src: "/usr/lib/systemd/user/ulauncher.service"
+    dest: "/etc/skel/.config/systemd/user/graphical-session.target.wants/ulauncher.service"
+    state: link
+
+- name: "Create settings directory"
+  become: true
+  ansible.builtin.file:
+    path: "{{ ulauncher_themes_dir }}"
+    state: directory
+    mode: "0755"
+
+# https://github.com/Ulauncher/Ulauncher/wiki/Hotkey-In-Wayland
+- name: Wayland adjustments
+  when: wayland_check.rc == 0 and 'gnome-shell' in ansible_facts.packages
+  ansible.builtin.set_fact:
+    ulauncher_settings: >-
+      {{
+        ulauncher_settings | combine({
+          "hotkey-show-app": "<Alt>minus"
+        })
+      }}
+
+- name: Write app settings
+  become: true
+  ansible.builtin.copy:
+    dest: "{{ (ulauncher_settings_dir, 'settings.json') | ansible.builtin.path_join }}"
+    content: "{{ ulauncher_settings | to_json(indent=4) }}"
+    mode: "0644"
+
+- name: Write extension settings
+  become: true
+  ansible.builtin.copy:
+    dest: "{{ (ulauncher_settings_dir, 'extensions.json') | ansible.builtin.path_join }}"
+    content: "{{ ulauncher_extensions | to_json(indent=4) }}"
+    mode: "0644"
+
+- name: Write shortcut settings
+  become: true
+  ansible.builtin.copy:
+    dest: "{{ (ulauncher_settings_dir, 'shortcuts.json') | ansible.builtin.path_join }}"
+    content: "{}"
+    mode: "0644"
+
+- name: Set up themes
+  loop: "{{ ulauncher_github_repo_theme }}"
+  loop_control:
+    loop_var: ulauncher_theme
+    label: "{{ ulauncher_theme.name }}"
+  ansible.builtin.include_tasks:
+    file: themes.yml
+
+...

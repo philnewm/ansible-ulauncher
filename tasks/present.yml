@@ -39,9 +39,14 @@
   changed_when: false
   failed_when: false
 
-- name: "Include wayland adjustments "
+- name: Include wayland adjustments
   when: wayland_check.rc == 0 and 'gnome-shell' in ansible_facts.packages
   ansible.builtin.include_tasks:
     file: wayland_config.yml
+
+- name: "Include config"
+  when: ulauncher_include_user_config
+  ansible.builtin.include_tasks:
+    file: user_config.yml
 
 ...

@@ -6,4 +6,16 @@
     name: ulauncher
     state: absent
 
+- name: Remove systemd user service
+  become: true
+  ansible.builtin.file:
+    path: "/etc/skel/.config/systemd/user/graphical-session.target.wants/ulauncher.service"
+    state: absent
+
+- name: Remove user config
+  become: true
+  ansible.builtin.file:
+    path: "{{ ulauncher_settings_dir }}"
+    state: absent
+
 ...
