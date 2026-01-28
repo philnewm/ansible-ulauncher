@@ -2,12 +2,11 @@
 
 state: present
 
-package_search:
-  "RedHat": "dnf list available"
-  "Debian": "apt-cache show"
 ulauncher_rpm_src_url: "https://github.com/philnewm/Ulauncher/releases/download/5.15.15/ulauncher_5.15.15_almalinux9.rpm"
 ulauncher_download_path: "~/ulauncher"
 ulauncher_gnome_systemwide_default_base: "/etc/dconf/db/local.d/00-gnome-base"
+
+ulauncher_include_user_config: true
 ulauncher_hotkey_dconf_path: "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ulauncher"
 ulauncher_default_shortcut: "<Alt>space"
 ulauncher_hotkey_parameters:
@@ -17,8 +16,6 @@ ulauncher_hotkey_parameters:
     value: "'ulauncher-toggle'"
   - name: "binding"
     value: "'{{ ulauncher_default_shortcut }}'"
-
-ulauncher_include_user_config: true
 ulauncher_settings_dir: "/etc/skel/.config/ulauncher"
 ulauncher_themes_dir: "{{ ulauncher_settings_dir }}/user-themes"
 
