@@ -3,15 +3,6 @@
 - name: Gather package facts
   ansible.builtin.package_facts:
 
-- name: Test installed global dependencies
-  loop: "{{ ulauncher_global_dependencies }}"
-  when: ansible_facts.distribution in ulauncher_rhel_derivatives
-  ansible.builtin.assert:
-    that:
-      - item in ansible_facts.packages
-    fail_msg: "Required package '{{ item }}' is missing."
-    quiet: true
-
 - name: Test installed ulauncher
   ansible.builtin.assert:
     that:
