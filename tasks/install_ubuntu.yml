@@ -39,6 +39,10 @@
   ansible.builtin.apt_repository:
     repo: "ppa:agornostal/ulauncher"
     state: present
+  register: ulauncher_ppa
+  retries: 5
+  delay: 5
+  until: ulauncher_ppa is succeeded
 
 - name: Update package cache
   become: true
