@@ -15,7 +15,6 @@
     signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
     state: present
     install_python_debian: true
-  register: ubuntu_repo
 
 - name: Add ulauncher ppa
   become: true
