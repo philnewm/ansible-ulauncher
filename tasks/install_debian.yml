@@ -38,15 +38,11 @@
     state: present
     filename: "ulauncher-{{ ulauncher_debian_to_ubuntu_map[ansible_facts.distribution_release | lower] }}"
 
-- name: Update package cache
-  become: true
-  ansible.builtin.apt:
-    update_cache: true
-
 - name: Install ulauncher
   become: true
   ansible.builtin.apt:
     name: ulauncher
     state: present
+    update_cache: true
 
 ...
