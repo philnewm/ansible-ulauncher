@@ -6,18 +6,18 @@
     name: unzip
     state: present
 
-- name: Ensure ulauncher user service directory exists
+- name: Ensure global graphical-session wants directory exists
   become: true
   ansible.builtin.file:
-    path: "/etc/skel/.config/systemd/user/graphical-session.target.wants"
+    path: /etc/systemd/user/graphical-session.target.wants
     state: directory
     mode: "0755"
 
-- name: Enable ulauncher service via symlink
+- name: Enable Ulauncher globally for graphical sessions
   become: true
   ansible.builtin.file:
-    src: "/usr/lib/systemd/user/ulauncher.service"
-    dest: "/etc/skel/.config/systemd/user/graphical-session.target.wants/ulauncher.service"
+    src: /usr/lib/systemd/user/ulauncher.service
+    dest: /etc/systemd/user/graphical-session.target.wants/ulauncher.service
     state: link
 
 - name: "Create settings directory"

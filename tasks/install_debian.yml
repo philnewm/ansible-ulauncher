@@ -1,42 +1,25 @@
 ---
 
-- name: Update package cache and install gnupg
-  become: true
-  ansible.builtin.apt:
-    name: gnupg
-    state: present
-    update_cache: true
-
-- name: Receive Ulauncher GPG key
-  become: true
-  ansible.builtin.command:
-    cmd: "gpg --keyserver keyserver.ubuntu.com --recv 0xfaf1020699503176"
-  args:
-    creates: "/root/.gnupg/pubring.kbx"
-
-- name: Export Ulauncher GPG key to keyring
-  become: true
-  ansible.builtin.command:
-    cmd: "gpg --armor --export 0xfaf1020699503176"
-  register: ulauncher_gpg_key
-  changed_when: false
-
-- name: Write Ulauncher keyring file
-  become: true
-  when: ulauncher_gpg_key.stdout != ""
-  ansible.builtin.copy:
-    content: "{{ ulauncher_gpg_key.stdout }}"
-    dest: /usr/share/keyrings/ulauncher-archive-keyring.gpg
-    mode: '0644'
-
 - name: Add Ulauncher apt repository
   become: true
-  ansible.builtin.apt_repository:
-    repo: |
-      deb [signed-by=/usr/share/keyrings/ulauncher-archive-keyring.gpg]
-      http://ppa.launchpad.net/agornostal/ulauncher/ubuntu {{ ulauncher_debian_to_ubuntu_map[ansible_facts.distribution_release | lower] }} main
-    state: present
-    filename: "ulauncher-{{ ulauncher_debian_to_ubuntu_map[ansible_facts.distribution_release | lower] }}"
+  ansible.builtin.deb822_repository:
+    name: ulauncher
+    enabled: true
+    allow_insecure: true
+    allow_weak: true
+    types: [deb]
+    uris: [http://ppa.launchpad.net/agornostal/ulauncher/ubuntu]
+    suites: "{{ ulauncher_debian_to_ubuntu_map[ansible_facts.distribution_release | lower] }}"
+    components: [main]
+    allow_downgrade_to_insecure: true
+    trusted: true
+    # Note obsolete when `trusted: true`
+    # signed_by: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xFAF1020699503176"
+    install_python_debian: true
+  register: ulauncher_ppa
+  retries: 5
+  delay: 5
+  until: ulauncher_ppa is succeeded
 
 - name: Install ulauncher
   become: true
