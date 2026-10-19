@@ -3,7 +3,6 @@
 # https://github.com/Ulauncher/Ulauncher/wiki/Hotkey-In-Wayland
 - name: Install wayland dependency
   become: true
-  when: "'wmctrl' not in ansible_facts.packages"
   ansible.builtin.package:
     name: wmctrl
     state: present
@@ -22,7 +21,7 @@
         | community.general.from_ini
       }}
 
-- name: Get custom keybindings as list safely
+- name: Get custom keybindings as list
   ansible.builtin.set_fact:
     custom_keybindings: >-
       {{

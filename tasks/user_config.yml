@@ -29,7 +29,7 @@
 
 # https://github.com/Ulauncher/Ulauncher/wiki/Hotkey-In-Wayland
 - name: Wayland adjustments
-  when: wayland_check.rc == 0 and 'gnome-shell' in ansible_facts.packages
+  when: ulauncher_wayland and 'gnome-shell' in ansible_facts.packages
   ansible.builtin.set_fact:
     ulauncher_settings: >-
       {{
