@@ -2,6 +2,7 @@
 
 state: present
 
+ulauncher_vars_file: null
 ulauncher_rpm_src_url: "https://github.com/philnewm/Ulauncher/releases/download/5.15.15/ulauncher_5.15.15_almalinux9.rpm"
 ulauncher_download_path: "~/ulauncher"
 ulauncher_gnome_systemwide_default_base: "/etc/dconf/db/local.d/00-gnome-base"
@@ -18,7 +19,7 @@ ulauncher_hotkey_parameters:
     value: "'{{ ulauncher_default_shortcut }}'"
 ulauncher_settings_dir: "/etc/skel/.config/ulauncher"
 ulauncher_themes_dir: "{{ ulauncher_settings_dir }}/user-themes"
-
+ulauncher_wayland: false
 ulauncher_settings:
   "blacklisted-desktop-dirs": "/usr/share/locale:/usr/share/app-install:/usr/share/kservices5:/usr/share/fk5:/usr/share/kservicetypes5:/usr/share/applications/screensavers:/usr/share/kde4:/usr/share/mimelnk"
   "clear-previous-query": true
